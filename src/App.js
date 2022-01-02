@@ -10,31 +10,64 @@ class App extends React.Component {
         super(props);
         this.state = { id: 0 };
         this.handleIdChange = this.handleIdChange.bind(this);
+        this.handleHandheld = this.handleHandheld.bind(this);
+        this.handleNotHandheld = this.handleNotHandheld.bind(this);
+        this.handleBack = this.handleBack.bind(this);
     }
 
     handleIdChange(idValue) {
         const idNum = parseInt(idValue, 10);
-        if(idValue == null || idValue == undefined || isNaN(idNum)) {
+        if (idValue == null || idValue == undefined || isNaN(idNum)) {
             this.setState({ id: 0 });
         } else {
             this.setState({ id: idNum });
         }
     }
 
+    handleHandheld() {
+        
+    }
+    
+    handleNotHandheld() {
+
+    }
+
+    handleBack() {
+        
+    }
+
     render() {
         const imageId = this.state.id;
 
         // Check if value exists before use
-        const imageFileName = !jsonData[imageId.toString()] ? "" : jsonData[imageId.toString()].name;
+        const imageEntry = !jsonData[imageId.toString()] ? { name: "", category: "n/a" } : jsonData[imageId.toString()];
 
-        const imageUrl = "https://gitlab.com/acgandhi/handheld-classification-files/-/raw/main/" + imageFileName;
+        const imageUrl = "https://gitlab.com/acgandhi/handheld-classification-files/-/raw/main/" + imageEntry.name;
+
+        // Buttons and other text
+        // This should probably be a react component
+        const statusContainerStyle = {
+            // width: '400px',
+            // display: 'flex',
+            justifyContent: 'left',
+            verticalAlign: 'middle'
+        };
+
+
         return (
             <div>
-                hello world
                 <TextInput value={imageId} label="Image #:" onChange={this.handleIdChange}></TextInput>
-                <img src={imageUrl}/>
+
+                <div style={statusContainerStyle}>
+                    <ButtonView label="Back" callback={this.handleNotHandheld} bgColor="#f0f0f0" textColor="black"/>
+                    <span> | </span>
+                    <ButtonView label="Not Handheld" callback={this.handleNotHandheld} bgColor="#ff9aa2" textColor="black"/>
+                    <ButtonView label="Handheld" callback={this.handleHandheld} bgColor="#e2f0cb" textColor="black"/>
+                    <span>Object type: <b>{imageEntry.category}</b></span>
+                </div>
+                <img src={imageUrl} />
+
             </div>
-            
         );
     }
 }

@@ -19,6 +19,8 @@ class ButtonView extends Component {
             color: this.props.textColor,
             border: 'none',
             borderRadius: '4px',
+            padding: '10px',
+            margin: '6px'
         }
         return (<button type="button" style={styles} onClick={this.props.callback}>{this.props.label}</button>);
     }
