@@ -18,18 +18,9 @@ class App extends React.Component {
         this.handleNotHandheld = this.handleNotHandheld.bind(this);
         this.handleBack = this.handleBack.bind(this);
         this.saveLocalStorage = this.saveLocalStorage.bind(this);
+        this.handleKeyPressed = this.handleKeyPressed.bind(this);
         // Empty log for display purposes.
         this.log = [];
-    }
-
-    handleIdChange(idValue) {
-        const idNum = parseInt(idValue, 10);
-        if (idValue == null || idValue == undefined || isNaN(idNum)) {
-            this.setState({ id: 0 });
-        } else {
-            this.setState({ id: idNum });
-        }
-        this.syncState();
     }
 
     pushToLog(id, isHandheld) {
@@ -40,6 +31,16 @@ class App extends React.Component {
         this.log.unshift (
             <div>Image #{id} set to <mark style={highlightStyle}>{text}</mark></div>
         )
+    }
+
+    handleIdChange(idValue) {
+        const idNum = parseInt(idValue, 10);
+        if (idValue == null || idValue == undefined || isNaN(idNum)) {
+            this.setState({ id: 0 });
+        } else {
+            this.setState({ id: idNum });
+        }
+        this.syncState();
     }
 
     handleHandheld() {
@@ -61,6 +62,21 @@ class App extends React.Component {
             this.setState({ id: this.state.id - 1 });;
         }
         this.syncState();
+    }
+
+    handleKeyPressed(e) {
+        switch (e.key) {
+            case "w":
+                this.handleHandheld();
+                break;
+            case "s":
+                this.handleNotHandheld();
+                break;
+            case "a":
+                this.handleBack();
+            default:
+                break;
+        }
     }
 
     syncState() {
@@ -101,7 +117,7 @@ class App extends React.Component {
         };
 
         return (
-            <div>
+            <div tabIndex={-1} onKeyDown={this.handleKeyPressed}>
                 <TextInput value={imageId} label="Image #:" onChange={this.handleIdChange}></TextInput>
 
                 <div style={statusContainerStyle}>
