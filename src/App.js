@@ -8,12 +8,13 @@ import jsonData from './data/split2.json'
 class App extends React.Component {
     constructor(props) {
         super(props);
-        const initalId = localStorage.getItem("id") == null ? 0 : localStorage.getItem("id");
+        const initalId = localStorage.getItem("id") == null ? 0 : parseInt(localStorage.getItem("id"));
         this.state = { id: initalId };
         this.handleIdChange = this.handleIdChange.bind(this);
         this.handleHandheld = this.handleHandheld.bind(this);
         this.handleNotHandheld = this.handleNotHandheld.bind(this);
         this.handleBack = this.handleBack.bind(this);
+        this.saveLocalStorage = this.saveLocalStorage.bind(this);
     }
 
     handleIdChange(idValue) {
@@ -49,6 +50,22 @@ class App extends React.Component {
         localStorage.setItem("id", this.state.id);
     }
 
+    saveLocalStorage() {
+        const saveFile = async (blob) => {
+            const a = document.createElement('a');
+            a.download = 'your-name.json';
+            a.href = URL.createObjectURL(blob);
+            a.addEventListener('click', (e) => {
+                setTimeout(() => URL.revokeObjectURL(a.href), 30 * 1000);
+            });
+            a.click();
+        };
+
+        const blob = new Blob([JSON.stringify(localStorage, null, 2)], { type: 'application/json' });
+
+        saveFile(blob);
+    }
+
     render() {
         const imageId = this.state.id;
 
@@ -79,7 +96,7 @@ class App extends React.Component {
                     <span>Object type: <b>{imageEntry.category}</b></span>
                 </div>
                 <img src={imageUrl} />
-                <div>{JSON.stringify(localStorage)}</div>
+                <div><ButtonView label="Export" callback={this.saveLocalStorage} bgColor="#0f0f0f" textColor="white" /></div>
             </div>
         );
     }
