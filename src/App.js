@@ -8,7 +8,8 @@ import jsonData from './data/split2.json'
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { id: 0 };
+        const initalId = localStorage.getItem("id") == null ? 0 : localStorage.getItem("id");
+        this.state = { id: initalId };
         this.handleIdChange = this.handleIdChange.bind(this);
         this.handleHandheld = this.handleHandheld.bind(this);
         this.handleNotHandheld = this.handleNotHandheld.bind(this);
@@ -22,18 +23,30 @@ class App extends React.Component {
         } else {
             this.setState({ id: idNum });
         }
+        this.syncState();
     }
 
     handleHandheld() {
-        
+        localStorage.setItem(this.state.id, true);
+        this.setState({ id: this.state.id + 1 });
+        this.syncState();
     }
-    
-    handleNotHandheld() {
 
+    handleNotHandheld() {
+        localStorage.setItem(this.state.id, false);
+        this.setState({ id: this.state.id + 1 });
+        this.syncState();
     }
 
     handleBack() {
-        
+        if (!this.state.id <= 0) {
+            this.setState({ id: this.state.id - 1 });;
+        }
+        this.syncState();
+    }
+
+    syncState() {
+        localStorage.setItem("id", this.state.id);
     }
 
     render() {
@@ -59,14 +72,14 @@ class App extends React.Component {
                 <TextInput value={imageId} label="Image #:" onChange={this.handleIdChange}></TextInput>
 
                 <div style={statusContainerStyle}>
-                    <ButtonView label="Back" callback={this.handleNotHandheld} bgColor="#f0f0f0" textColor="black"/>
+                    <ButtonView label="Back" callback={this.handleBack} bgColor="#f0f0f0" textColor="black" />
                     <span> | </span>
-                    <ButtonView label="Not Handheld" callback={this.handleNotHandheld} bgColor="#ff9aa2" textColor="black"/>
-                    <ButtonView label="Handheld" callback={this.handleHandheld} bgColor="#e2f0cb" textColor="black"/>
+                    <ButtonView label="Not Handheld" callback={this.handleNotHandheld} bgColor="#ff9aa2" textColor="black" />
+                    <ButtonView label="Handheld" callback={this.handleHandheld} bgColor="#e2f0cb" textColor="black" />
                     <span>Object type: <b>{imageEntry.category}</b></span>
                 </div>
                 <img src={imageUrl} />
-
+                <div>{JSON.stringify(localStorage)}</div>
             </div>
         );
     }

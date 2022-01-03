@@ -9,10 +9,14 @@ import React, { Component } from 'react';
 class ButtonView extends Component {
     constructor(props) {
         super(props);
-        // Maybe need to bind something here idk
-        // this.handleClick = this.handleClick.bind(this);
+        // Idk if binding here is needed
+        this.handleClick = this.handleClick.bind(this);        
     }
     
+    handleClick() {
+        this.props.callback();
+    }
+
     render() {
         const styles = {
             backgroundColor: this.props.bgColor,
@@ -21,8 +25,8 @@ class ButtonView extends Component {
             borderRadius: '4px',
             padding: '10px',
             margin: '6px'
-        }
-        return (<button type="button" style={styles} onClick={this.props.callback}>{this.props.label}</button>);
+        };
+        return (<button type="button" style={styles} onClick={this.handleClick}>{this.props.label}</button>);
     }
     
 }
