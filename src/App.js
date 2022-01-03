@@ -4,17 +4,22 @@ import React from 'react';
 import ButtonView from './components/ButtonView';
 import TextInput from './components/TextInput';
 import jsonData from './data/split2.json'
+import * as colors from './utils/colors';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
+
         const initalId = localStorage.getItem("id") == null ? 0 : parseInt(localStorage.getItem("id"));
         this.state = { id: initalId };
+
         this.handleIdChange = this.handleIdChange.bind(this);
         this.handleHandheld = this.handleHandheld.bind(this);
         this.handleNotHandheld = this.handleNotHandheld.bind(this);
         this.handleBack = this.handleBack.bind(this);
         this.saveLocalStorage = this.saveLocalStorage.bind(this);
+        // Empty log for display purposes.
+        this.log = [];
     }
 
     handleIdChange(idValue) {
@@ -27,13 +32,25 @@ class App extends React.Component {
         this.syncState();
     }
 
+    pushToLog(id, isHandheld) {
+        const color = isHandheld ? colors.GREEN : colors.RED;
+        const text = isHandheld ? "Handheld" : "Not Handheld";
+        const highlightStyle = {backgroundColor: color};
+        console.log(colors.GREEN);
+        this.log.unshift (
+            <div>Image #{id} set to <mark style={highlightStyle}>{text}</mark></div>
+        )
+    }
+
     handleHandheld() {
+        this.pushToLog(this.state.id, true);
         localStorage.setItem(this.state.id, true);
         this.setState({ id: this.state.id + 1 });
         this.syncState();
     }
 
     handleNotHandheld() {
+        this.pushToLog(this.state.id, false);
         localStorage.setItem(this.state.id, false);
         this.setState({ id: this.state.id + 1 });
         this.syncState();
@@ -83,7 +100,6 @@ class App extends React.Component {
             verticalAlign: 'middle'
         };
 
-
         return (
             <div>
                 <TextInput value={imageId} label="Image #:" onChange={this.handleIdChange}></TextInput>
@@ -95,8 +111,10 @@ class App extends React.Component {
                     <ButtonView label="Handheld" callback={this.handleHandheld} bgColor="#e2f0cb" textColor="black" />
                     <span>Object type: <b>{imageEntry.category}</b></span>
                 </div>
-                <img src={imageUrl} />
+                <img src={imageUrl} height="700px"/>
                 <div><ButtonView label="Export" callback={this.saveLocalStorage} bgColor="#0f0f0f" textColor="white" /></div>
+                <div>Log:</div>
+                <div>{this.log}</div>
             </div>
         );
     }
