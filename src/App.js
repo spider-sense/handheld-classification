@@ -109,6 +109,7 @@ class App extends React.Component {
         // Check if value exists before use
         const imageEntry = this.getImageEntry(imageId);
         const imageUrl = "https://gitlab.com/acgandhi/handheld-classification-files/-/raw/main/" + imageEntry.name;
+        const imageSize = window.innerHeight*0.65
 
         const preloadImageEntry = this.getImageEntry(imageId + 1);
         const preloadImageUrl = "https://gitlab.com/acgandhi/handheld-classification-files/-/raw/main/" + preloadImageEntry.name;
@@ -133,7 +134,7 @@ class App extends React.Component {
                     <ButtonView label="Handheld (w)" callback={this.handleHandheld} bgColor="#e2f0cb" textColor="black" />
                     <span>Object type: <b>{imageEntry.category}</b></span>
                 </div>
-                <img src={imageUrl} height="700px"/>
+                <img src={imageUrl} height={imageSize}/>
                 <img src={preloadImageUrl} style={{display: 'none'}}/>
                 <div><ButtonView label="Export" callback={this.saveLocalStorage} bgColor="#0f0f0f" textColor="white" /></div>
                 <div>Log:</div>
