@@ -79,6 +79,10 @@ class App extends React.Component {
         }
     }
 
+    getImageEntry(imageId) {
+        return !jsonData[imageId.toString()] ? { name: "", category: "n/a" } : jsonData[imageId.toString()]; 
+    }
+
     syncState() {
         localStorage.setItem("id", this.state.id);
     }
@@ -103,9 +107,11 @@ class App extends React.Component {
         const imageId = this.state.id;
 
         // Check if value exists before use
-        const imageEntry = !jsonData[imageId.toString()] ? { name: "", category: "n/a" } : jsonData[imageId.toString()];
-
+        const imageEntry = this.getImageEntry(imageId);
         const imageUrl = "https://gitlab.com/acgandhi/handheld-classification-files/-/raw/main/" + imageEntry.name;
+
+        const preloadImageEntry = this.getImageEntry(imageId + 1);
+        const preloadImageUrl = "https://gitlab.com/acgandhi/handheld-classification-files/-/raw/main/" + preloadImageEntry.name;
 
         // Buttons and other text
         // This should probably be a react component
@@ -121,13 +127,14 @@ class App extends React.Component {
                 <TextInput value={imageId} label="Image #:" onChange={this.handleIdChange}></TextInput>
 
                 <div style={statusContainerStyle}>
-                    <ButtonView label="Back" callback={this.handleBack} bgColor="#f0f0f0" textColor="black" />
+                    <ButtonView label="Back (a)" callback={this.handleBack} bgColor="#f0f0f0" textColor="black" />
                     <span> | </span>
-                    <ButtonView label="Not Handheld" callback={this.handleNotHandheld} bgColor="#ff9aa2" textColor="black" />
-                    <ButtonView label="Handheld" callback={this.handleHandheld} bgColor="#e2f0cb" textColor="black" />
+                    <ButtonView label="Not Handheld (s)" callback={this.handleNotHandheld} bgColor="#ff9aa2" textColor="black" />
+                    <ButtonView label="Handheld (w)" callback={this.handleHandheld} bgColor="#e2f0cb" textColor="black" />
                     <span>Object type: <b>{imageEntry.category}</b></span>
                 </div>
                 <img src={imageUrl} height="700px"/>
+                <img src={preloadImageUrl} style={{display: 'none'}}/>
                 <div><ButtonView label="Export" callback={this.saveLocalStorage} bgColor="#0f0f0f" textColor="white" /></div>
                 <div>Log:</div>
                 <div>{this.log}</div>
