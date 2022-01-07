@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/handheld-classification/static/css/main.70e80841.css",
-    "main.js": "/handheld-classification/static/js/main.a42e50b7.js",
+    "main.js": "/handheld-classification/static/js/main.c721761a.js",
     "static/js/787.589702eb.chunk.js": "/handheld-classification/static/js/787.589702eb.chunk.js",
     "index.html": "/handheld-classification/index.html",
     "main.70e80841.css.map": "/handheld-classification/static/css/main.70e80841.css.map",
-    "main.a42e50b7.js.map": "/handheld-classification/static/js/main.a42e50b7.js.map",
+    "main.c721761a.js.map": "/handheld-classification/static/js/main.c721761a.js.map",
     "787.589702eb.chunk.js.map": "/handheld-classification/static/js/787.589702eb.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.70e80841.css",
-    "static/js/main.a42e50b7.js"
+    "static/js/main.c721761a.js"
   ]
 }
