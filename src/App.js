@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import ButtonView from './components/ButtonView';
@@ -35,7 +34,7 @@ class App extends React.Component {
 
     handleIdChange(idValue) {
         const idNum = parseInt(idValue, 10);
-        if (idValue == null || idValue == undefined || isNaN(idNum)) {
+        if (idValue == null || idValue === undefined || isNaN(idNum)) {
             this.setState({ id: 0 });
         } else {
             this.setState({ id: idNum });
@@ -74,6 +73,7 @@ class App extends React.Component {
                 break;
             case "a":
                 this.handleBack();
+                break;
             default:
                 break;
         }
